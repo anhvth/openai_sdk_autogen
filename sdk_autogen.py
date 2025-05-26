@@ -304,6 +304,12 @@ def collect_namespaces(pkg_name: str) -> Dict[str, List[str]]:
         )
         return {}
 
+    if api_module.__file__ is None:
+        print(
+            f"Error: Could not determine path for API package '{api_pkg}'. Module has no __file__ attribute."
+        )
+        return {}
+
     api_path = Path(api_module.__file__).parent
     mapping: Dict[str, List[str]] = {}
     for mod_info in pkgutil.walk_packages([str(api_path)], prefix=f"{api_pkg}."):

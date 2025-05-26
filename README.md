@@ -2,7 +2,7 @@
 
 Automatically generate OpenAI-style SDK clients from OpenAPI specifications. This tool creates clean, typed Python SDKs that follow OpenAI's client patterns and conventions.
 
-## 🚀 Quick Start (Standalone)
+## 🚀 Quick Start
 
 The easiest way to use this tool is via the standalone script that requires no local setup:
 
@@ -43,78 +43,12 @@ client = GeneratedClient(
 result = client.some_method(param1="value1", param2="value2")
 ```
 
-## 🛠 Local Development Setup
-
-For local development or customization:
-
-### Prerequisites
-
-- Python 3.8+
-- pip
-
-### Installation
-
-```bash
-git clone https://github.com/anhvth/openai_sdk_autogen.git
-cd openai_sdk_autogen
-pip install -r reqs.txt
-```
-
-### Usage
-
-1. **Start your API server** (or ensure your OpenAPI JSON is accessible)
-
-2. **Run the generator:**
-```bash
-# Use the local script with default settings
-./run.sh
-
-# Or specify a custom OpenAPI URL
-./run.sh http://your-api.com/openapi.json
-```
-
-3. **Use the generated SDK:**
-```python
-from generated_openai_sdk import HelloWorldClient
-
-client = HelloWorldClient(
-    base_url="http://localhost:8000",
-    api_key="optional-api-key"
-)
-```
-
 ## 🔧 Configuration
-
-### Standalone Script Options
 
 The standalone script uses these defaults:
 - **Output file:** `generated_openai_sdk.py`
 - **Class name:** `GeneratedClient`
 - **Client directory:** `openai_sdk_client_output`
-
-### Local Script Configuration
-
-Edit `run.sh` to customize:
-```bash
-CLIENT_OUTPUT_DIR="client_output"      # Where to store raw client
-CLASS_NAME="HelloWorldClient"          # Generated class name
-SERVER_PORT=8000                       # Local server port
-OUTPUT_FILE="generated_openai_sdk.py"  # Output SDK filename
-```
-
-## 📁 Project Structure
-
-```
-openai-sdk-autogen/
-├── README.md                    # This file
-├── run.sh                      # Local development script
-├── standalone_generator.sh     # Standalone deployment script
-├── sdk_autogen.py             # Core SDK generation logic
-├── test.py                    # Test suite
-├── reqs.txt                   # Python dependencies
-└── src/
-    └── example_server.py      # Example FastAPI server
-```
 
 ## 🌟 Features
 
@@ -132,7 +66,6 @@ openai-sdk-autogen/
 
 ### Flexible Deployment
 - **Standalone:** No local setup required, works with wget/curl
-- **Local development:** Full control and customization
 - **Cross-platform:** Works on macOS, Linux, and WSL
 
 ## 📖 Examples
@@ -160,44 +93,6 @@ client = GeneratedClient(
     headers={"Custom-Header": "value"}
 )
 ```
-
-## 🧪 Testing
-
-Run the test suite:
-```bash
-python test.py
-```
-
-Test with the example server:
-```bash
-# Terminal 1: Start example server
-python src/example_server.py --port 8000
-
-# Terminal 2: Generate and test SDK
-./run.sh http://localhost:8000/openapi.json
-python test.py
-```
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature-name`
-3. Make your changes
-4. Add tests for new functionality
-5. Run tests: `python test.py`
-6. Commit changes: `git commit -am 'Add feature'`
-7. Push to branch: `git push origin feature-name`
-8. Submit a Pull Request
-
-## 📝 Requirements
-
-### Runtime Dependencies
-- `openapi-python-client` - OpenAPI client generation
-- `requests` - HTTP client library
-
-### Development Dependencies
-- `fastapi` - Example server framework
-- `uvicorn` - ASGI server for testing
 
 ## 🐛 Troubleshooting
 

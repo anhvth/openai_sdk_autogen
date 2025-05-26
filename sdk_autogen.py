@@ -286,20 +286,6 @@ if __name__ == '__main__':
                     if callable(method_callable):
                         await test_method(item_obj, method_name, method_callable, prefix="  ")
         
-        print(f"\\n--- Testing Top-Level Client Methods ---")
-        for method_name in dir(client):
-            if method_name.startswith('_') or method_name in ['model_fields', 'model_config', 'base_url', '_raw']:
-                continue
-            method_callable = getattr(client, method_name)
-            if not callable(method_callable) or (hasattr(method_callable, "__self__") and method_callable.__self__.__class__.__name__.startswith('_')):
-                 if not callable(method_callable) and hasattr(method_callable, '_raw') and method_callable.__class__.__name__.startswith('_'):
-                     continue
-            if callable(method_callable):
-                 is_namespace_like = hasattr(method_callable, '_raw') and not inspect.isfunction(method_callable) and not inspect.ismethod(method_callable)
-                 if is_namespace_like and method_callable.__class__.__name__.endswith("Namespace"):
-                     continue
-                 await test_method(client, method_name, method_callable, prefix="")
-        print("\\n--- End of SDK Test ---")
 
     asyncio.run(run_all_tests())
     print("\\nNOTE: Generic test attempts to call parameter-less methods or methods with simple params. "

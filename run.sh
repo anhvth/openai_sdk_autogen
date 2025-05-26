@@ -3,6 +3,9 @@
 # prerequisites: start a local server that serves the OpenAPI JSON file at http://localhost:8000/openapi.json
 # Usage: ./run.sh [URL]
 
+
+FILE_REMOTE=https://github.com/anhvth/openai_sdk_autogen/blob/1964383620129fad3c9c40dbf932859f6ed4ef72/sdk_autogen.py
+
 # ========================
 # CONFIGURATION PARAMETERS
 # ========================

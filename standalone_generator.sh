@@ -160,40 +160,54 @@ fi
 # ========================
 # CREATE USAGE EXAMPLE
 # ========================
+
+# Extract base URL from JSON_URL (remove /openapi.json or similar endpoints)
+BASE_URL=$(echo "$JSON_URL" | sed 's|/openapi\.json.*$||' | sed 's|/docs.*$||' | sed 's|/redoc.*$||')
+
 cat > "../example_usage.py" << EOF
 #!/usr/bin/env python3
 """
 Example usage of the generated SDK.
+Generated from: $JSON_URL
 """
 
 from generated_openai_sdk import $CLASS_NAME
 
-# Initialize the client
+# Initialize the client (using keyword arguments)
 client = $CLASS_NAME(
-    base_url="http://your-api-base-url.com",  # Replace with your actual base URL
-    api_key="your-api-key-here"  # Optional
+    base_url="$BASE_URL"  # Extracted from your OpenAPI JSON URL
 )
 
 # Example usage (adjust based on your API)
-# result = client.some_method()
-# print(result)
-
-print("SDK client initialized successfully!")
-print("Available methods:")
-for method_name in dir(client):
-    if not method_name.startswith('_'):
-        print(f"  - {method_name}")
+try:
+    # List available methods
+    print("SDK client initialized successfully!")
+    print("Available methods:")
+    for method_name in dir(client):
+        if not method_name.startswith('_') and callable(getattr(client, method_name)):
+            print(f"  - {method_name}")
+    
+    # Example: If your API has a health_check method
+    # result = client.health_check()
+    # print(f"Health check result: {result}")
+    
+except Exception as e:
+    print(f"Error using SDK: {e}")
+    print("Make sure your API server is running and accessible!")
 EOF
 
-echo ""
-echo "✅ Generation complete!"
-echo ""
-echo "Generated files:"
-echo "  - $OUTPUT_FILE (main SDK file)"
-echo "  - $CLIENT_OUTPUT_DIR/ (OpenAPI client)"
-echo "  - example_usage.py (usage example)"
-echo ""
-echo "To use the SDK:"
-echo "  from $OUTPUT_FILE import $CLASS_NAME"
-echo "  client = $CLASS_NAME(base_url='your-api-url')"
-echo ""
+python3 -c "
+print()
+print('✅ Generation complete!')
+print()
+print('Generated files:')
+print(f'  - $OUTPUT_FILE (main SDK file)')
+print(f'  - $CLIENT_OUTPUT_DIR/ (OpenAPI client)')
+print(f'  - example_usage.py (usage example)')
+print()
+print('To use the SDK:')
+print(f'  from generated_openai_sdk import $CLASS_NAME')
+print(f'  client = $CLASS_NAME(base_url=\"$BASE_URL\")')
+print(f'  client.health_check()  # Example method call')
+print()
+"

@@ -181,15 +181,8 @@ client = $CLASS_NAME(
 # Example usage (adjust based on your API)
 try:
     # List available methods
-    print("SDK client initialized successfully!")
-    print("Available methods:")
-    for method_name in dir(client):
-        if not method_name.startswith('_') and callable(getattr(client, method_name)):
-            print(f"  - {method_name}")
-    
-    # Example: If your API has a health_check method
-    # result = client.health_check()
-    # print(f"Health check result: {result}")
+    result = client.health_check()
+    print(f"Health check result: {result}")
     
 except Exception as e:
     print(f"Error using SDK: {e}")
